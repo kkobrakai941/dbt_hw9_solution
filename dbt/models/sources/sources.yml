@@ -1,0 +1,47 @@
+version: 2
+
+sources:
+  - name: transactions_db
+    tables:
+      - name: transactions
+        description: "Сырые транзакционные данные"
+        columns:
+          - name: transaction_time
+            description: "Время транзакции"
+          - name: merch
+            description: "Мерчант"
+          - name: cat_id
+            description: "Категория транзакции"
+          - name: amount
+            description: "Сумма транзакции"
+          - name: name_1
+            description: "Имя клиента"
+          - name: name_2
+            description: "Фамилия клиента"
+          - name: gender
+            description: "Пол клиента"
+          - name: street
+            description: "Улица клиента"
+          - name: one_city
+            description: "Город клиента"
+          - name: us_state
+            description: "Штат США"
+          - name: post_code
+            description: "Почтовый индекс"
+          - name: lat
+            description: "Широта клиента"
+          - name: lon
+            description: "Долгота клиента"
+          - name: population_city
+            description: "Население города"
+          - name: jobs
+            description: "Сфера занятости"
+          - name: merchant_lat
+            description: "Широта мерчанта"
+          - name: merchant_lon
+            description: "Долгота мерчанта"
+          - name: target
+            description: "Признак фрода (0 – нет, 1 – фрод)"
+            tests:
+              - accepted_values:
+                  values: [0, 1]
