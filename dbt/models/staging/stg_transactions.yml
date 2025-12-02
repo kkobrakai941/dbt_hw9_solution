@@ -1,0 +1,60 @@
+version: 2
+
+models:
+  - name: stg_transactions
+    description: "Cleaned and typed transactions data with bucketed amounts"
+    columns:
+      - name: transaction_time
+        description: "Timestamp of transaction"
+        tests:
+          - not_null
+      - name: merch
+        description: "Merchant name"
+      - name: cat_id
+        description: "Category identifier"
+      - name: amount
+        description: "Transaction amount"
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+      - name: name_1
+        description: "First name of customer"
+      - name: name_2
+        description: "Last name of customer"
+      - name: gender
+        description: "Gender of customer"
+        tests:
+          - accepted_values:
+              values: ['M', 'F']
+      - name: street
+        description: "Street address of customer"
+      - name: one_city
+        description: "City of customer"
+      - name: us_state
+        description: "State in the US"
+      - name: post_code
+        description: "Postal code as integer"
+      - name: lat
+        description: "Latitude of customer"
+      - name: lon
+        description: "Longitude of customer"
+      - name: population_city
+        description: "Population of the city"
+      - name: jobs
+        description: "Job category"
+      - name: merchant_lat
+        description: "Latitude of merchant"
+      - name: merchant_lon
+        description: "Longitude of merchant"
+      - name: is_fraud
+        description: "Fraud flag (1 if fraud, 0 otherwise)"
+        tests:
+          - accepted_values:
+              values: [0, 1]
+      - name: amount_bucket
+        description: "Bucketed amount category"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['low', 'medium', 'high']
