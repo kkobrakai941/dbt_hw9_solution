@@ -1,0 +1,9 @@
+[sqlfluff]
+dialect = clickhouse
+
+[sqlfluff:rules]
+max_line_length = 120
+
+[sqlfluff:templater:jinja]
+apply_dbt_macros = true
+load_macros_from_path = dbt/macros
