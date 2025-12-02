@@ -1,0 +1,29 @@
+name: dbt_hw9_solution
+version: 1.0.0
+config-version: 2
+
+# This project configures the dataset paths and variables for the dbt homework assignment.
+profile: default
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  dbt_hw9_solution:
+    staging:
+      +materialized: view
+      +schema: staging
+    marts:
+      +materialized: table
+      +schema: marts
+
+vars:
+  low_bound: 50
+  medium_bound: 300
