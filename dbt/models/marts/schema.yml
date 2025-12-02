@@ -1,0 +1,132 @@
+version: 2
+
+models:
+  - name: mart_daily_state_metrics
+    description: "Daily metrics aggregated by state."
+    columns:
+      - name: transaction_date
+        description: "Date of the transactions."
+      - name: us_state
+        description: "Two-letter US state abbreviation."
+      - name: total_transactions
+        description: "Total number of transactions on this date in the state."
+      - name: total_amount
+        description: "Sum of transaction amounts."
+      - name: avg_amount
+        description: "Average transaction amount."
+      - name: p95_amount
+        description: "95th percentile of transaction amounts."
+      - name: share_high_transactions
+        description: "Share of transactions classified as high amount."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_date
+            - us_state
+
+  - name: mart_fraud_by_category
+    description: "Fraud statistics by transaction category."
+    columns:
+      - name: cat_id
+        description: "Transaction category ID."
+      - name: total_transactions
+        description: "Total number of transactions in this category."
+      - name: fraud_transactions
+        description: "Number of fraudulent transactions in this category."
+      - name: fraud_rate
+        description: "Percentage of transactions that are fraudulent."
+      - name: total_amount
+        description: "Total amount of transactions in this category."
+      - name: fraud_amount
+        description: "Total amount of fraudulent transactions."
+    tests:
+      - unique:
+          column_name: cat_id
+
+  - name: mart_fraud_by_state
+    description: "Fraud statistics aggregated by U.S. state."
+    columns:
+      - name: us_state
+        description: "Two-letter US state abbreviation."
+      - name: total_transactions
+        description: "Total transactions in the state."
+      - name: fraud_transactions
+        description: "Number of fraudulent transactions."
+      - name: fraud_rate
+        description: "Percentage of fraudulent transactions."
+      - name: unique_customers
+        description: "Number of unique customers."
+      - name: unique_merchants
+        description: "Number of unique merchants."
+      - name: total_amount
+        description: "Total amount of transactions."
+      - name: fraud_amount
+        description: "Total amount of fraudulent transactions."
+    tests:
+      - unique:
+          column_name: us_state
+
+  - name: mart_customer_risk_profile
+    description: "Risk profile for each customer based on fraud rate."
+    columns:
+      - name: customer_name
+        description: "Customer full name."
+      - name: transaction_count
+        description: "Total transactions by the customer."
+      - name: total_amount
+        description: "Total amount spent by the customer."
+      - name: avg_amount
+        description: "Average transaction amount."
+      - name: fraud_transactions
+        description: "Number of fraudulent transactions."
+      - name: fraud_rate
+        description: "Fraud rate for the customer."
+      - name: risk_level
+        description: "Customer risk segment: HIGH, MEDIUM, or LOW."
+    tests:
+      - unique:
+          column_name: customer_name
+
+  - name: mart_hourly_fraud_pattern
+    description: "Fraud patterns by day of week and hour."
+    columns:
+      - name: day_of_week
+        description: "Day of the week (1=Monday)."
+      - name: hour
+        description: "Hour of the day (0-23)."
+      - name: total_transactions
+        description: "Total number of transactions."
+      - name: fraud_transactions
+        description: "Number of fraudulent transactions."
+      - name: fraud_rate
+        description: "Percentage of fraudulent transactions."
+      - name: total_amount
+        description: "Total amount of transactions."
+      - name: avg_amount
+        description: "Average transaction amount."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day_of_week
+            - hour
+
+  - name: mart_merchant_analytics
+    description: "Analytics for each merchant."
+    columns:
+      - name: merch
+        description: "Merchant identifier."
+      - name: total_transactions
+        description: "Total transactions processed by the merchant."
+      - name: total_amount
+        description: "Total transaction amount for the merchant."
+      - name: avg_amount
+        description: "Average transaction amount."
+      - name: fraud_transactions
+        description: "Number of fraudulent transactions."
+      - name: fraud_rate
+        description: "Fraud rate as a percentage."
+      - name: is_suspicious
+        description: "Flag indicating merchant is suspicious if fraud rate > 2%."
+    tests:
+      - unique:
+          column_name: merch
