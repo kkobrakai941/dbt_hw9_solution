@@ -1,0 +1,19 @@
+version: 2
+
+unit_tests:
+  - name: test_amount_bucket
+    description: "Unit test for amount_bucket macro on stg_transactions"
+    model: ref('stg_transactions')
+    given:
+      - input:
+          amount: 10
+        expect:
+          amount_bucket: low
+      - input:
+          amount: 100
+        expect:
+          amount_bucket: medium
+      - input:
+          amount: 500
+        expect:
+          amount_bucket: high
